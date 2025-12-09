@@ -33,8 +33,8 @@ export default function ContactsPage() {
             <div className="service-card">
               <h3>Email</h3>
               <p style={{ marginTop: '15px' }}>
-                <a href="mailto:info@getmodels.ru" style={{ fontSize: '20px', fontWeight: '600' }}>
-                  info@getmodels.ru
+                <a href="mailto:info@klicme.ru" style={{ fontSize: '20px', fontWeight: '600' }}>
+                  info@klicme.ru
                 </a>
               </p>
             </div>

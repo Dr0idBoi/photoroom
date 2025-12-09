@@ -57,7 +57,7 @@ export default function Sidebar({ currentPath = '' }: SidebarProps) {
 
   return (
     <aside className="admin-sidebar">
-      <h1>Photoroom</h1>
+      <h1>Klic me</h1>
       <nav>
         <ul className="admin-nav">
           {navItems.map((item) => (

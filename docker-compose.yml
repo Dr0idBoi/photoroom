@@ -1,9 +1,9 @@
 services:
-  photoroom:
+  klicme:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: photoroom_app
+    container_name: klicme_app
     restart: unless-stopped
     ports:
       - "3000:3000"
@@ -14,10 +14,10 @@ services:
       - ./data:/app/data
       - ./public/images/uploads:/app/public/images/uploads
     networks:
-      - photoroom_network
+      - klicme_network
     # Запускаем миграцию БД и seed перед запуском сервера
     command: sh -c "node node_modules/.bin/prisma db push --skip-generate && node prisma/seed.js && node server.js"
 
 networks:
-  photoroom_network:
+  klicme_network:
     driver: bridge

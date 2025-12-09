@@ -68,7 +68,7 @@ function LoginForm() {
     <div className="login-box">
       <h1>Вход в админ панель</h1>
       <p style={{ textAlign: 'center', color: '#666', marginBottom: '30px' }}>
-        Photoroom
+        Klic me
       </p>
       
       {error && (
@@ -140,7 +140,7 @@ function LoginFormFallback() {
     <div className="login-box">
       <h1>Вход в админ панель</h1>
       <p style={{ textAlign: 'center', color: '#666', marginBottom: '30px' }}>
-        Photoroom
+        Klic me
       </p>
       <div style={{ textAlign: 'center', padding: '40px' }}>
         Загрузка...

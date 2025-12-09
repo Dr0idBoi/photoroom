@@ -37,7 +37,7 @@ export default function CastingPage() {
 
             <div style={{ textAlign: 'center', padding: '40px' }}>
               <p style={{ fontSize: '16px', color: '#666' }}>
-                Следите за актуальными кастингами в нашем <a href="https://t.me/getmodels" style={{ textDecoration: 'underline' }}>Telegram-канале</a>
+                Следите за актуальными кастингами в нашем <a href="https://t.me/klicme" style={{ textDecoration: 'underline' }}>Telegram-канале</a>
               </p>
             </div>
           </div>

@@ -14,7 +14,7 @@ export default function NewBlogPostPage() {
     slug: '',
     excerpt: '',
     content: '',
-    author: 'Photoroom',
+    author: 'Klic me',
     featuredImage: ''
   })
 

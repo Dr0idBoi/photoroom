@@ -1,13 +1,20 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 
 export default function Header() {
   return (
     <header className="site-header">
       <div className="nav-container">
         <Link href="/" className="logo">
-          Photoroom
+          <Image 
+            src="/images/Logo.png" 
+            alt="Klic me" 
+            width={150} 
+            height={50}
+            style={{ objectFit: 'contain' }}
+          />
         </Link>
         
         <nav className="nav-links">

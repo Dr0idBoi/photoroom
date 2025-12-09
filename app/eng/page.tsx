@@ -8,7 +8,7 @@ export default function EnglishPage() {
       
       <header className="site-header">
         <div className="nav-container">
-          <Link href="/" className="logo">Photoroom</Link>
+          <Link href="/" className="logo">Klic me</Link>
           <nav className="nav-links">
             <a href="tel:+79857438748" className="phone-link">+7 (985) 743 87 48</a>
             <div className="lang-switcher">
@@ -31,7 +31,7 @@ export default function EnglishPage() {
           
           <div style={{ maxWidth: '800px', margin: '0 auto', lineHeight: '1.8' }}>
             <p style={{ marginBottom: '20px', fontSize: '16px' }}>
-              Photoroom is a Moscow-based modeling agency offering a wide range of comprehensive services 
+              Klic me is a Moscow-based modeling agency offering a wide range of comprehensive services 
               in the field of personnel selection for event activities.
             </p>
 

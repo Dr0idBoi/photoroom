@@ -1,11 +1,18 @@
 import Link from 'next/link'
+import Image from 'next/image'
 
 export default function Footer() {
   return (
     <footer className="site-footer">
       <div className="footer-container">
         <div className="footer-section">
-          <h3>Photoroom</h3>
+          <Image 
+            src="/images/Logo.png" 
+            alt="Klic me" 
+            width={150} 
+            height={50}
+            style={{ objectFit: 'contain', marginBottom: '15px' }}
+          />
           <p>Модельное агентство Москвы, которое предлагает широкий спектр комплексных услуг в сфере подбора моделей на событийные мероприятия.</p>
         </div>
         
@@ -34,14 +41,14 @@ export default function Footer() {
           <h3>Контакты</h3>
           <ul>
             <li><a href="tel:+79857438748">+7 (985) 743 87 48</a></li>
-            <li><a href="mailto:info@getmodels.ru">info@getmodels.ru</a></li>
+            <li><a href="mailto:info@klicme.ru">info@klicme.ru</a></li>
             <li>г. Москва, ул. Новослободская 36, стр. 1</li>
           </ul>
         </div>
       </div>
       
       <div className="footer-bottom">
-        <p>© {new Date().getFullYear()} Photoroom. Все права защищены.</p>
+        <p>© {new Date().getFullYear()} Klic me. Все права защищены.</p>
       </div>
     </footer>
   )
