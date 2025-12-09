@@ -66,6 +66,3 @@ export default async function AdminBlogPage() {
     </>
   )
 }
-
-
-

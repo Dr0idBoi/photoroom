@@ -169,4 +169,3 @@ export default function EditPortfolioPage({ params }: { params: { id: string } }
     </>
   )
 }
-

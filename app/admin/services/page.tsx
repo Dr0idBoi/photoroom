@@ -62,6 +62,3 @@ export default async function AdminServicesPage() {
     </>
   )
 }
-
-
-

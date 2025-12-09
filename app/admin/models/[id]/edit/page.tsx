@@ -296,4 +296,3 @@ export default function EditModelPage({ params }: { params: { id: string } }) {
     </>
   )
 }
-

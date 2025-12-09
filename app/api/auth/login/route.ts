@@ -1,34 +1,55 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { prisma } from '@/lib/prisma'
-import { verifyPassword } from '@/lib/auth'
 import { cookies } from 'next/headers'
+import { prisma } from '@/lib/prisma'
+import { verifyPassword, SESSION_COOKIE_NAME, SESSION_MAX_AGE } from '@/lib/auth'
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
     const { email, password } = body
     
+    if (!email || !password) {
+      return NextResponse.json(
+        { error: 'Email и пароль обязательны' }, 
+        { status: 400 }
+      )
+    }
+    
+    // Ищем пользователя
     const user = await prisma.user.findUnique({
-      where: { email }
+      where: { email: email.toLowerCase().trim() }
     })
     
     if (!user) {
-      return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 })
+      console.log('[Auth] Login failed: user not found for email:', email)
+      return NextResponse.json(
+        { error: 'Неверный email или пароль' }, 
+        { status: 401 }
+      )
     }
     
+    // Проверяем пароль
     const isValid = await verifyPassword(password, user.passwordHash)
     
     if (!isValid) {
-      return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 })
+      console.log('[Auth] Login failed: invalid password for user:', email)
+      return NextResponse.json(
+        { error: 'Неверный email или пароль' }, 
+        { status: 401 }
+      )
     }
     
-    // Set cookie for session
-    cookies().set('admin_session', user.id, {
+    // Устанавливаем cookie сессии
+    const cookieStore = await cookies()
+    cookieStore.set(SESSION_COOKIE_NAME, user.id, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
-      maxAge: 60 * 60 * 24 * 7 // 7 days
+      maxAge: SESSION_MAX_AGE,
+      path: '/'
     })
+    
+    console.log('[Auth] Login successful for user:', email)
     
     return NextResponse.json({ 
       success: true,
@@ -39,9 +60,10 @@ export async function POST(request: NextRequest) {
       }
     })
   } catch (error) {
-    return NextResponse.json({ error: 'Login failed' }, { status: 500 })
+    console.error('[Auth] Login error:', error)
+    return NextResponse.json(
+      { error: 'Ошибка сервера при входе' }, 
+      { status: 500 }
+    )
   }
 }
-
-
-

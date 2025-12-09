@@ -65,6 +65,3 @@ export default async function AdminPortfolioPage() {
     </>
   )
 }
-
-
-

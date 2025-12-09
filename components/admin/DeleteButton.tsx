@@ -7,38 +7,48 @@ interface DeleteButtonProps {
   id: string
   type: 'model' | 'blog' | 'portfolio' | 'service' | 'category'
   name: string
+  onDeleted?: () => void
 }
 
-export default function DeleteButton({ id, type, name }: DeleteButtonProps) {
+const API_ENDPOINTS: Record<DeleteButtonProps['type'], string> = {
+  model: '/api/models',
+  blog: '/api/blog',
+  portfolio: '/api/portfolio',
+  service: '/api/services',
+  category: '/api/categories'
+}
+
+export default function DeleteButton({ id, type, name, onDeleted }: DeleteButtonProps) {
   const router = useRouter()
   const [deleting, setDeleting] = useState(false)
 
-  const apiEndpoints = {
-    model: '/api/models',
-    blog: '/api/blog',
-    portfolio: '/api/portfolio',
-    service: '/api/services',
-    category: '/api/categories'
-  }
-
   const handleDelete = async () => {
-    if (!confirm(`Вы уверены, что хотите удалить "${name}"?`)) {
+    if (!confirm(`Вы уверены, что хотите удалить "${name}"?\n\nЭто действие нельзя отменить.`)) {
       return
     }
 
     setDeleting(true)
 
     try {
-      const response = await fetch(`${apiEndpoints[type]}/${id}`, {
-        method: 'DELETE'
+      const response = await fetch(`${API_ENDPOINTS[type]}/${id}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
       })
 
       if (response.ok) {
-        router.refresh()
+        if (onDeleted) {
+          onDeleted()
+        } else {
+          router.refresh()
+        }
       } else {
-        alert('Ошибка при удалении')
+        const data = await response.json().catch(() => ({}))
+        alert(data.error || 'Ошибка при удалении')
       }
     } catch (error) {
+      console.error('Delete error:', error)
       alert('Ошибка при удалении')
     } finally {
       setDeleting(false)
@@ -50,10 +60,12 @@ export default function DeleteButton({ id, type, name }: DeleteButtonProps) {
       onClick={handleDelete}
       className="btn-admin danger"
       disabled={deleting}
+      style={{
+        opacity: deleting ? 0.6 : 1,
+        cursor: deleting ? 'not-allowed' : 'pointer',
+      }}
     >
       {deleting ? 'Удаление...' : 'Удалить'}
     </button>
   )
 }
-
-

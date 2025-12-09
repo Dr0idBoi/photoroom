@@ -72,6 +72,3 @@ export default async function AdminModelsPage() {
     </>
   )
 }
-
-
-

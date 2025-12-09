@@ -259,4 +259,3 @@ export default function EditServicePage({ params }: { params: { id: string } }) 
     </>
   )
 }
-
