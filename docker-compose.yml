@@ -17,7 +17,7 @@ services:
       - ./public/images/uploads:/app/public/images/uploads
     networks:
       - photoroom_network
-    command: sh -c "npx prisma migrate deploy && npx prisma db seed || true && node server.js"
+    command: sh -c "/app/node_modules/.bin/prisma migrate deploy && /app/node_modules/.bin/prisma db seed || true && node server.js"
 
   # Опционально: Nginx как reverse proxy
   nginx:

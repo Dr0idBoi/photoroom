@@ -40,6 +40,7 @@ COPY --from=base /app/.next/static ./.next/static
 COPY --from=base /app/prisma ./prisma
 COPY --from=base /app/node_modules/.prisma ./node_modules/.prisma
 COPY --from=base /app/node_modules/@prisma ./node_modules/@prisma
+COPY --from=base /app/node_modules/.bin ./node_modules/.bin
 
 # Создаем директории для загрузок и БД
 RUN mkdir -p /app/data /app/public/images/uploads
