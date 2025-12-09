@@ -19,6 +19,9 @@ RUN npx prisma generate
 # Копируем остальные файлы
 COPY . .
 
+# Копируем JavaScript версию seed
+COPY prisma/seed.js ./prisma/seed.js
+
 # Собираем Next.js приложение
 RUN npm run build
 
@@ -44,6 +47,7 @@ COPY --from=base /app/prisma ./prisma
 COPY --from=base /app/node_modules/.prisma ./node_modules/.prisma
 COPY --from=base /app/node_modules/@prisma ./node_modules/@prisma
 COPY --from=base /app/node_modules/.bin ./node_modules/.bin
+COPY --from=base /app/node_modules/bcryptjs ./node_modules/bcryptjs
 
 # Создаем директории для загрузок и БД
 RUN mkdir -p /app/data /app/public/images/uploads
