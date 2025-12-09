@@ -43,7 +43,7 @@ export default async function CatalogPage() {
               </div>
               
               <div className="services-grid">
-                {category.models.slice(0, 4).map(model => (
+                {category.models.slice(0, 4).map((model: any) => (
                   <Link key={model.id} href={`/model/${model.slug}`} className="model-card">
                     <div style={{ 
                       width: '100%', 
