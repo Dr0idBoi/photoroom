@@ -7,14 +7,15 @@ export default function Header() {
   return (
     <header className="site-header">
       <div className="nav-container">
-        <Link href="/" className="logo">
+        <Link href="/" className="logo" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
           <Image 
             src="/images/Logo.png" 
             alt="Klic me" 
-            width={150} 
+            width={50} 
             height={50}
             style={{ objectFit: 'contain' }}
           />
+          <span style={{ fontSize: '24px', fontWeight: 'bold', color: '#333' }}>Klic me</span>
         </Link>
         
         <nav className="nav-links">
@@ -24,12 +25,6 @@ export default function Header() {
           <Link href="/blog">Блог</Link>
           <Link href="/contacts">Контакты</Link>
           <a href="tel:+79857438748" className="phone-link">+7 (985) 743 87 48</a>
-          
-          <div className="lang-switcher">
-            <Link href="/">ru</Link>
-            <span>/</span>
-            <Link href="/eng">en</Link>
-          </div>
         </nav>
       </div>
     </header>

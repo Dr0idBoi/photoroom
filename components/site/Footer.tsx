@@ -6,13 +6,16 @@ export default function Footer() {
     <footer className="site-footer">
       <div className="footer-container">
         <div className="footer-section">
-          <Image 
-            src="/images/Logo.png" 
-            alt="Klic me" 
-            width={150} 
-            height={50}
-            style={{ objectFit: 'contain', marginBottom: '15px' }}
-          />
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '15px' }}>
+            <Image 
+              src="/images/Logo.png" 
+              alt="Klic me" 
+              width={50} 
+              height={50}
+              style={{ objectFit: 'contain' }}
+            />
+            <span style={{ fontSize: '24px', fontWeight: 'bold' }}>Klic me</span>
+          </div>
           <p>Модельное агентство Москвы, которое предлагает широкий спектр комплексных услуг в сфере подбора моделей на событийные мероприятия.</p>
         </div>
         
