@@ -8,10 +8,10 @@ export default function Footer() {
         <div className="footer-section">
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '15px' }}>
             <Image 
-              src="/images/Logo.png" 
+              src="/images/IMG_2544-_1_.svg" 
               alt="Klic me" 
-              width={50} 
-              height={50}
+              width={40} 
+              height={40}
               style={{ objectFit: 'contain' }}
             />
             <span style={{ fontSize: '24px', fontWeight: 'bold' }}>Klic me</span>
@@ -34,9 +34,9 @@ export default function Footer() {
         <div className="footer-section">
           <h3>Моделям</h3>
           <ul>
-            <li><Link href="/casting">Кастинги</Link></li>
-            <li><Link href="/vacancies">Вакансии</Link></li>
-            <li><Link href="/blog">Информация</Link></li>
+            <li><Link href="/casting">Смотреть кастинги</Link></li>
+            <li><Link href="/session-service">Записаться на фотосессию</Link></li>
+            <li><Link href="/vacancies">Устроиться моделью</Link></li>
           </ul>
         </div>
         
