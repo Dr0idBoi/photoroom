@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  photoroom:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: photoroom_app
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - DATABASE_URL=file:/app/data/production.db
+    volumes:
+      # Персистентное хранилище для базы данных
+      - ./data:/app/data
+      # Персистентное хранилище для загруженных изображений
+      - ./public/images/uploads:/app/public/images/uploads
+    command: sh -c "npx prisma migrate deploy && npx prisma db seed || true && node server.js"
+

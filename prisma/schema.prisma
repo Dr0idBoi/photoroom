@@ -1,0 +1,109 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String   @id @default(uuid())
+  email        String   @unique
+  passwordHash String
+  role         String   @default("admin")
+  createdAt    DateTime @default(now())
+}
+
+model Category {
+  id          String   @id @default(uuid())
+  name        String
+  slug        String   @unique
+  description String?
+  type        String // women, men, kids, hostes, etc
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  models      Model[]
+}
+
+model Model {
+  id         String   @id @default(uuid())
+  name       String
+  slug       String   @unique
+  height     Int?
+  bust       Int?
+  waist      Int?
+  hips       Int?
+  shoeSize   String?
+  hairColor  String?
+  skills     String? // JSON string
+  status     String   @default("active") // active, inactive
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  images     ModelImage[]
+  categories Category[]
+}
+
+model ModelImage {
+  id        String   @id @default(uuid())
+  modelId   String
+  url       String
+  alt       String?
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+  model     Model    @relation(fields: [modelId], references: [id], onDelete: Cascade)
+}
+
+model Service {
+  id            String   @id @default(uuid())
+  name          String
+  slug          String   @unique
+  description   String?
+  content       String? // Rich text content
+  priceInfo     String? // JSON string for pricing
+  categoryGroup String? // "shooting", "events", "exhibitions", "sports"
+  images        String? // JSON array of image URLs
+  order         Int      @default(0)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model BlogPost {
+  id            String   @id @default(uuid())
+  title         String
+  slug          String   @unique
+  excerpt       String?
+  content       String // Rich text content
+  author        String?
+  featuredImage String?
+  publishedAt   DateTime @default(now())
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model Portfolio {
+  id          String   @id @default(uuid())
+  title       String
+  description String?
+  images      String? // JSON array of image URLs
+  serviceType String?
+  date        DateTime @default(now())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model ContactSubmission {
+  id        String   @id @default(uuid())
+  name      String
+  phone     String
+  email     String?
+  message   String?
+  service   String?
+  createdAt DateTime @default(now())
+}
+
+
+

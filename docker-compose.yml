@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+  photoroom:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: photoroom_app
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - DATABASE_URL=file:/app/data/production.db
+    volumes:
+      # Персистентное хранилище для базы данных
+      - ./data:/app/data
+      # Персистентное хранилище для загруженных изображений
+      - ./public/images/uploads:/app/public/images/uploads
+    networks:
+      - photoroom_network
+    command: sh -c "npx prisma migrate deploy && npx prisma db seed || true && node server.js"
+
+  # Опционально: Nginx как reverse proxy
+  nginx:
+    image: nginx:alpine
+    container_name: photoroom_nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/ssl:/etc/nginx/ssl:ro
+      - ./public/images:/usr/share/nginx/html/images:ro
+    depends_on:
+      - photoroom
+    networks:
+      - photoroom_network
+
+networks:
+  photoroom_network:
+    driver: bridge
+
+volumes:
+  data:
+  uploads:
+
