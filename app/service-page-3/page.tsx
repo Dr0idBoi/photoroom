@@ -3,10 +3,20 @@ import Footer from '@/components/site/Footer'
 import ServiceCard from '@/components/site/ServiceCard'
 import { prisma } from '@/lib/prisma'
 
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
+
 export default async function ServicesPage() {
-  const services = await prisma.service.findMany({
-    orderBy: { order: 'asc' }
-  }).catch(() => [])
+  let services: any[] = []
+  
+  try {
+    services = await prisma.service.findMany({
+      orderBy: { order: 'asc' }
+    })
+    console.log('Services loaded:', services.length)
+  } catch (error) {
+    console.error('Error loading services:', error)
+  }
 
   const grouped = {
     shooting: services.filter(s => s.categoryGroup === 'shooting'),

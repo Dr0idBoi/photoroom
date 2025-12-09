@@ -4,11 +4,21 @@ import Footer from '@/components/site/Footer'
 import ServiceCard from '@/components/site/ServiceCard'
 import { prisma } from '@/lib/prisma'
 
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
+
 export default async function HomePage() {
-  const services = await prisma.service.findMany({
-    take: 12,
-    orderBy: { order: 'asc' }
-  }).catch(() => [])
+  let services: any[] = []
+  
+  try {
+    services = await prisma.service.findMany({
+      take: 12,
+      orderBy: { order: 'asc' }
+    })
+    console.log('Homepage services loaded:', services.length)
+  } catch (error) {
+    console.error('Error loading services:', error)
+  }
 
   return (
     <>
