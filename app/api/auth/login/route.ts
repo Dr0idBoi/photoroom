@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { cookies } from 'next/headers'
 import { prisma } from '@/lib/prisma'
 import { verifyPassword, SESSION_COOKIE_NAME, SESSION_MAX_AGE } from '@/lib/auth'
 
@@ -7,6 +6,8 @@ export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
     const { email, password } = body
+    
+    console.log('[Auth] Login attempt for:', email)
     
     if (!email || !password) {
       return NextResponse.json(
@@ -28,6 +29,8 @@ export async function POST(request: NextRequest) {
       )
     }
     
+    console.log('[Auth] User found:', user.email, 'checking password...')
+    
     // Проверяем пароль
     const isValid = await verifyPassword(password, user.passwordHash)
     
@@ -39,19 +42,10 @@ export async function POST(request: NextRequest) {
       )
     }
     
-    // Устанавливаем cookie сессии
-    const cookieStore = await cookies()
-    cookieStore.set(SESSION_COOKIE_NAME, user.id, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
-      maxAge: SESSION_MAX_AGE,
-      path: '/'
-    })
+    console.log('[Auth] Password valid, setting cookie for user:', user.id)
     
-    console.log('[Auth] Login successful for user:', email)
-    
-    return NextResponse.json({ 
+    // Создаём response с cookie
+    const response = NextResponse.json({ 
       success: true,
       user: {
         id: user.id,
@@ -59,6 +53,19 @@ export async function POST(request: NextRequest) {
         role: user.role
       }
     })
+    
+    // Устанавливаем cookie через response (НЕ secure для HTTP)
+    response.cookies.set(SESSION_COOKIE_NAME, user.id, {
+      httpOnly: true,
+      secure: false, // Разрешаем HTTP (измените на true если используете HTTPS)
+      sameSite: 'lax',
+      maxAge: SESSION_MAX_AGE,
+      path: '/'
+    })
+    
+    console.log('[Auth] Login successful for user:', email)
+    
+    return response
   } catch (error) {
     console.error('[Auth] Login error:', error)
     return NextResponse.json(

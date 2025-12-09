@@ -3,10 +3,18 @@ import Footer from '@/components/site/Footer'
 import BlogCard from '@/components/site/BlogCard'
 import { prisma } from '@/lib/prisma'
 
+export const dynamic = 'force-dynamic'
+
 export default async function BlogPage() {
-  const posts = await prisma.blogPost.findMany({
-    orderBy: { publishedAt: 'desc' }
-  }).catch(() => [])
+  let posts: any[] = []
+  try {
+    posts = await prisma.blogPost.findMany({
+      orderBy: { publishedAt: 'desc' }
+    })
+    console.log('[Blog] Loaded posts:', posts.length)
+  } catch (error) {
+    console.error('[Blog] Error loading posts:', error)
+  }
 
   return (
     <>

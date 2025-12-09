@@ -4,17 +4,31 @@ import { hashPassword } from '../lib/auth'
 const prisma = new PrismaClient()
 
 async function main() {
+  console.log('🌱 Starting database seed...')
+  
   // Create admin user
   const adminPassword = await hashPassword('admin123')
-  await prisma.user.upsert({
-    where: { email: 'admin@getmodels.local' },
-    update: {},
-    create: {
-      email: 'admin@getmodels.local',
-      passwordHash: adminPassword,
-      role: 'admin',
-    },
+  
+  const existingUser = await prisma.user.findUnique({
+    where: { email: 'admin@getmodels.local' }
   })
+  
+  if (existingUser) {
+    await prisma.user.update({
+      where: { email: 'admin@getmodels.local' },
+      data: { passwordHash: adminPassword }
+    })
+    console.log('✓ Admin user password updated')
+  } else {
+    await prisma.user.create({
+      data: {
+        email: 'admin@getmodels.local',
+        passwordHash: adminPassword,
+        role: 'admin',
+      }
+    })
+    console.log('✓ Admin user created')
+  }
 
   // Create categories
   const categories = [
@@ -35,10 +49,11 @@ async function main() {
   for (const cat of categories) {
     await prisma.category.upsert({
       where: { slug: cat.slug },
-      update: {},
+      update: { name: cat.name, type: cat.type, order: cat.order },
       create: cat,
     })
   }
+  console.log('✓ Categories created/updated')
 
   // Create sample models
   const womenCategory = await prisma.category.findUnique({ where: { slug: 'women' } })
@@ -59,6 +74,7 @@ async function main() {
       },
     })
   }
+  console.log('✓ Sample models created')
 
   // Create sample blog posts
   await prisma.blogPost.upsert({
@@ -84,6 +100,7 @@ async function main() {
       author: 'Photoroom',
     },
   })
+  console.log('✓ Blog posts created')
 
   // Create sample services with images
   const services = [
@@ -116,10 +133,17 @@ async function main() {
   for (const service of services) {
     await prisma.service.upsert({
       where: { slug: service.slug },
-      update: {},
+      update: { 
+        name: service.name, 
+        categoryGroup: service.categoryGroup, 
+        priceInfo: service.priceInfo, 
+        order: service.order, 
+        images: service.images 
+      },
       create: service,
     })
   }
+  console.log('✓ Services created/updated')
 
   // Create sample portfolio items
   await prisma.portfolio.upsert({
@@ -143,13 +167,14 @@ async function main() {
       serviceType: 'bodyart',
     },
   })
+  console.log('✓ Portfolio items created')
 
-  console.log('Database seeded successfully!')
+  console.log('✅ Database seeded successfully!')
 }
 
 main()
   .catch((e) => {
-    console.error(e)
+    console.error('❌ Seed error:', e)
     process.exit(1)
   })
   .finally(async () => {

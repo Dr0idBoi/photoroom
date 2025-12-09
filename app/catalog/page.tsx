@@ -3,18 +3,26 @@ import Footer from '@/components/site/Footer'
 import Link from 'next/link'
 import { prisma } from '@/lib/prisma'
 
+export const dynamic = 'force-dynamic'
+
 export default async function CatalogPage() {
-  const categories = await prisma.category.findMany({
-    include: {
-      models: {
-        take: 4,
-        include: {
-          images: { take: 1, orderBy: { order: 'asc' } }
+  let categories: any[] = []
+  try {
+    categories = await prisma.category.findMany({
+      include: {
+        models: {
+          take: 4,
+          include: {
+            images: { take: 1, orderBy: { order: 'asc' } }
+          }
         }
-      }
-    },
-    orderBy: { order: 'asc' }
-  }).catch(() => [])
+      },
+      orderBy: { order: 'asc' }
+    })
+    console.log('[Catalog] Loaded categories:', categories.length)
+  } catch (error) {
+    console.error('[Catalog] Error loading categories:', error)
+  }
 
   return (
     <>

@@ -2,10 +2,18 @@ import Header from '@/components/site/Header'
 import Footer from '@/components/site/Footer'
 import { prisma } from '@/lib/prisma'
 
+export const dynamic = 'force-dynamic'
+
 export default async function PortfolioPage() {
-  const items = await prisma.portfolio.findMany({
-    orderBy: { date: 'desc' }
-  }).catch(() => [])
+  let items: any[] = []
+  try {
+    items = await prisma.portfolio.findMany({
+      orderBy: { date: 'desc' }
+    })
+    console.log('[Portfolio] Loaded items:', items.length)
+  } catch (error) {
+    console.error('[Portfolio] Error loading items:', error)
+  }
 
   return (
     <>
