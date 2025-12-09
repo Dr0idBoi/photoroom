@@ -33,6 +33,9 @@ ENV NEXT_TELEMETRY_DISABLED=1
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
+# Устанавливаем OpenSSL 3 и зависимости для Prisma
+RUN apk add --no-cache openssl libc6-compat
+
 # Копируем необходимые файлы из builder
 COPY --from=base /app/public ./public
 COPY --from=base /app/.next/standalone ./
