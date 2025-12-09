@@ -10,54 +10,14 @@ services:
     environment:
       - NODE_ENV=production
       - DATABASE_URL=file:/app/data/production.db
-      # Раскомментируйте и укажите ваш домен
-      # - NEXTAUTH_URL=https://your-domain.ru
     volumes:
-      # Персистентное хранилище для базы данных
-      - photoroom_data:/app/data
-      # Персистентное хранилище для загруженных изображений
-      - photoroom_uploads:/app/public/images/uploads
+      - ./data:/app/data
+      - ./public/images/uploads:/app/public/images/uploads
     networks:
       - photoroom_network
     # Запускаем миграцию БД и seed перед запуском сервера
-    command: >
-      sh -c "
-        npx --yes prisma@5.22.0 db push --skip-generate &&
-        npx --yes prisma@5.22.0 db seed &&
-        node server.js
-      "
-    healthcheck:
-      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000/api/auth/session"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 40s
-
-  # Nginx reverse proxy (опционально)
-  nginx:
-    image: nginx:alpine
-    container_name: photoroom_nginx
-    restart: unless-stopped
-    ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
-      - ./nginx/ssl:/etc/nginx/ssl:ro
-      # Статические файлы для nginx (опционально)
-      - photoroom_uploads:/usr/share/nginx/html/images/uploads:ro
-    depends_on:
-      photoroom:
-        condition: service_healthy
-    networks:
-      - photoroom_network
+    command: sh -c "node node_modules/.bin/prisma db push --skip-generate && node prisma/seed.js && node server.js"
 
 networks:
   photoroom_network:
     driver: bridge
-
-volumes:
-  photoroom_data:
-    driver: local
-  photoroom_uploads:
-    driver: local
