@@ -1,10 +1,8 @@
 'use client'
 
 import { useState } from 'react'
-import { useRouter } from 'next/navigation'
 
 export default function AdminLoginPage() {
-  const router = useRouter()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
@@ -30,8 +28,8 @@ export default function AdminLoginPage() {
         return
       }
 
-      router.push('/admin')
-      router.refresh()
+      // Используем window.location вместо router.refresh() для standalone режима
+      window.location.href = '/admin'
     } catch (err) {
       setError('An error occurred')
       setLoading(false)
