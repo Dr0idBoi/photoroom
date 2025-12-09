@@ -51,6 +51,25 @@
   color: var(--hover-color);
 }
 
+/* Highlighted nav link - "Наши Услуги" */
+.nav-highlight {
+  background: linear-gradient(135deg, #d4a853 0%, #c49943 100%);
+  color: #000 !important;
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-weight: 600 !important;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition: all 0.3s !important;
+}
+
+.nav-highlight:hover {
+  background: linear-gradient(135deg, #e5b964 0%, #d5aa54 100%);
+  color: #000 !important;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(212, 168, 83, 0.4);
+}
+
 .phone-link {
   color: var(--primary-color);
   font-weight: 600;

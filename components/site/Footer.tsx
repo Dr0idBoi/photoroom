@@ -12,7 +12,7 @@ export default function Footer() {
               alt="Klic me" 
               width={40} 
               height={40}
-              style={{ objectFit: 'contain' }}
+              style={{ objectFit: 'contain', filter: 'invert(1) brightness(2)' }}
             />
             <span style={{ fontSize: '24px', fontWeight: 'bold' }}>Klic me</span>
           </div>

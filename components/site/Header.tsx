@@ -34,7 +34,7 @@ export default function Header() {
         </Link>
         
         <nav className="nav-links desktop-nav">
-          <Link href="/service-page-3">Наши Услуги</Link>
+          <Link href="/service-page-3" className="nav-highlight">Наши Услуги</Link>
           <Link href="/catalog">Каталог моделей</Link>
           <Link href="/portfolio">Портфолио</Link>
           <Link href="/blog">Блог</Link>
